@@ -102,9 +102,70 @@ The main() method hooks our code into that process and runs through the code and
 ```
 public class Zoo {
     public static void main(String[] args) {
-
+        System.out.println("Hello, world!");
     }
 }
 ```
 
 This code does absolutely nothing, but it does give us a starting point for our code.
+
+The only reason we need a class structure, and thus a main() method, is because the Java language requires it. To compile Java code, the file must have the extension _.java_. The name of the file must match the name of the class. The result is a file of <span style="color: #1eced4">bytecode</span> by the same name, but with a <span style="color: #1eced4">.class</span> filename extension. Bycode consists of instructions that t he JVM knows how to execute.
+
+Let us go through the words in the main() method's signature.
+
+- public
+
+The keyword public is what's called an <span style="color: #1eced4">_access modifier_</span>. It declares this method's level of exposure to potential callers in the program. More about the access modifier in Chapter 4 (@TODO: add link).
+
+- static
+
+They keyword <span style="color: #1eced4">_static_</span> binds a method to its class so it can <span style="color: #1eced4">ONLY</span> be called by the class name.
+
+**Attention**:
+
+If a main() method isn't present in the class we name with the .java executable (in other words, the 'main' file which starts our program), the process will throw an error and terminate. It will also throw an error if the main function is <span style="color: #1eced4">NOT</span> static.
+
+- void
+
+The keyword _void_ represents the <span style="color: #1eced4">return type</span>. A method that returns no data (void), returns control to the caller silently. Other return types will actually return some form of data to the caller.
+
+- main(String[] args)
+
+The parameter list of the main method is represented as an array _java.lang.String_ Objects. In practice, you can write: either of these:
+
+`String[] args`
+
+`String args[]`
+
+`String... args`
+
+The variables _args_ hint that this list contains values that were read in (arguments) when the JVM started. The name _args_ can be replaced by anything.
+
+# Understanding Package Declarations and Imports
+
+Java has thousands of built-in classes, organized in <span style="color: #1eced4">_packages_</span>, which are logocal groupings for classes. If you want to use a certain class, you firstly import the package, rather than the specific class (at first). Then, once the package was defined, you can point to the specific class.
+
+```
+public class ImportExample {
+    public static void main(String[] args) {
+        Random r = new Random();
+        System.out.println(r.nextInt(10));
+    }
+}
+```
+
+Without importing the class, the Java compiler will not compile, since it has no idea where `Random` is coming from. We fix this by putting this on top of the file:
+
+`import java.util.Random`.
+
+The compiler first looks at the word `java`, which means it came from the JDK in this case. It can start with something else, which then means it is likely coming from elsewhere.
+
+Then, Java will look for _child packages_, in this case `util`. Be aware that these package names can be named as the developer likes, so something like `com.mypackage.this.is.valid.package.naming` is perfectly fine!
+
+## Wildcards
+
+Classes in the same package can be imported together, using a wildcard. The wildcard is written with an asterisk. Example:
+
+`import java.util.*`
+
+This allows the developer to use all the Classes inside the `java.util` package. Not that this <span style="color: #1eced4">ONLY</span> imports **classes**! It will <span style="color: #1eced4">NOT</span> import child packages, fields or methods.
