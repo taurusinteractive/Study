@@ -168,4 +168,109 @@ Classes in the same package can be imported together, using a wildcard. The wild
 
 `import java.util.*`
 
-This allows the developer to use all the Classes inside the `java.util` package. Not that this <span style="color: #1eced4">ONLY</span> imports **classes**! It will <span style="color: #1eced4">NOT</span> import child packages, fields or methods.
+This allows the developer to use all the Classes inside the `java.util` package. Not that this <span style="color: #1eced4">ONLY</span> imports **classes**! It will <span style="color: #1eced4">NOT</span> import child packages, fields or methods. However, there is the so called "**static import**", which also imports other types. More on that in chapter 4.
+
+Using specific imports and wildcard imports achieve exactly the same. The compiler will take care of the imports and thus using wildcards will not slow down your application.
+
+## Redundant Imports
+
+There is one special package we will never have to import: `java.lang`, which is _always_ imported. You can still manually import it, but you don't have to.
+
+Another case would be importing a class which is inside the same `package` as the class importing it. Java automatically looks in the current package already for other classes.
+
+Say we need the `Paths` class and the `Files` class from the `nio` package. We can import these two ways.
+
+Using a wildcard:
+
+```
+import java.nio.file.*
+```
+
+Using explicit imports:
+
+```
+import java.nio.file.Files;
+import java.nio.file.Paths;
+```
+
+Examples of imports that will NOT work:
+
+`import java.nio.*;`
+This does not work because `file` is a package, not a class.
+
+`import java.nio.*.*;`
+This doesn't work, because you can only use one wildcard and it MUST be at the end.
+
+`import java.nio.file.Paths.*;`
+This doesn't work, because you can only import classes, not methods inside classes.
+
+## Naming Conflicts
+
+We use packages because then we can <span style="color: #1eced4">reuse</span> class names, without them interfering with each other.
+
+In the wild, there are many overlapping class names. One example is the `Date` class which is located in both `java.util` and `java.sql`. But what if we need classes out both of these packages? Then a explicitly imported classes takes precedence over imports with a wildcard.
+
+```
+import java.util.Date;
+import java.sql.*;
+```
+
+In this example we can make use of all the classes in `java.jql`, but the `Date` one, because we explicitly told Java we are using the one from `java.util`. If you **really** need to use both `Date` methods inside one class, then you can do this:
+
+```
+import java.util.Date;
+
+public class Conflicts {
+    Date date;
+    java.sql.Data sqlDate;
+}
+```
+
+You can directly point to the package / classname when initializing a variable.
+
+## Creating a New Package
+
+When we do not define a _package_ ourselves, it is considered to be in the **default package**. You can tell something is in the default package when there is no package name.
+
+A package can be created by making a new directory. For example
+`C:/temp/packagea;`
+
+```
+package packagea;
+
+public class ClassA {
+}
+```
+
+`C:/temp/packageb;`
+
+```
+package packageb;
+import packagea.ClassA;
+
+public class ClassB {
+    public static void main(String[] args) {
+        ClassA a;
+    }
+}
+```
+
+In the example above, we have two packages. Package b contains the `starter method` for the application called `main()`. The class imports `ClassA` from the package `packagea` and instantiates an `Object` using the ClassA class.
+
+## Code Formatting on the Exam
+
+On the exam we don't worry about imports, unless they are specifically printed. If they are not printer, we must assume they are correct. The same goes for when the `main()` method is missing.
+
+# Creating Objects
+
+Programs can only do usefull things if we create new objects. An object is an _instance_ of a class.
+
+## Constructors
+
+To create an instance of a class, you must write `new` before it. For example:
+
+`Random r = new Random();`
+
+First we declare the _type_ we will be creating, then we give it a name. Java can then store a reference to the object. Then we write `new Random()` to actually **create** the object.
+
+`Random()` looks like a method, because of the parentheses. However, it is called a **_constructor_**. which is a special type of method. A constructor creates a new object.
